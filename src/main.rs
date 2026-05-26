@@ -31,4 +31,18 @@ fn main() {
     
     let manifest_list = parse::ManifestList::from_file(&manifest_list_path);
     println!("Manifest List Records: {:?}\n\n", manifest_list.records);
+    
+    let first_record = manifest_list.records.first()
+        .expect("No records found in manifest list");
+    println!("First Manifest List Record: {:?}\n\n", first_record);
+    
+    let manifest = parse::ManifestFile::from_file(&first_record.manifest_path);
+    println!("Manifest File: {:?}\n\n", manifest);
+
+    let parquet_path = manifest.data_file
+        .file_path.clone();
+    println!("First Parquet File Path: {:?}\n\n", parquet_path);
+
+    parse::read_parquet_file(&parquet_path)
+        .expect("Failed to read parquet file"); 
 }

@@ -18,14 +18,14 @@ pub struct ManifestFile {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-struct DataFileRecord {
+pub struct DataFileRecord {
     pub content: i32,
     pub file_path: String,
     pub file_format: String,
-    //pub partition_data: String,
+    pub partition_data: Option<String>,
     pub record_count: i64,
     pub file_size_in_bytes: i64,
-    // pub column_sizes: Option<String>,
+    //pub column_sizes: Option<Vec<ColumnSize>>,
 }
 
 impl ManifestFile {
