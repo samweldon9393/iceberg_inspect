@@ -16,16 +16,16 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
-    println!("Table: {}", args.table);
     
-    let parsed = parse::TableMetadata::from_file(&args.table);
-    match parsed {
-        Ok(metadata) => {
-            println!("Parsed metadata: {:?}", metadata);
-            // Here you can add logic to handle different commands based on args.command
-        },
-        Err(e) => {
-            eprintln!("Failed to parse metadata: {}", e);
-        }
-    }
+    let metadata = parse::TableMetadata::from_file(&args.table)
+        .expect("Failed to parse table metadata");
+    println!("Table Metadata: {:?}\n\n", metadata);
+    
+    let cur_snapshot = metadata.get_current_snapshot()
+        .expect("Failed to get current snapshot");
+    println!("Current Snapshot: {:?}\n\n", cur_snapshot);
+    
+    let manifest_list_path = cur_snapshot.get_manifest_list_path()
+        .expect("Failed to get manifest list path from current snapshot");
+    println!("Manifest List Path: {:?}\n\n", manifest_list_path);
 }
