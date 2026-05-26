@@ -3,18 +3,17 @@ use clap::Parser;
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
-    /// Name of the person to greet
+    /// Path to the database
     #[arg(short, long)]
-    name: String,
-
-    /// Number of times to greet
-    #[arg(short, long, default_value_t = 1)]
-    count: u8,
+    table: String,
+    
+    /// Command to execute [snapshots, schema, files, read]
+    #[arg(short, long)]
+    command: String,
 }
 
 fn main() {
     let args = Args::parse();
-    for _ in 0..args.count {
-        println!("Hello, {}!", args.name);
-    }
+    println!("Table: {}", args.table);
+    println!("Command: {}", args.command);
 }
