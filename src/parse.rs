@@ -8,3 +8,4 @@ pub use manifest_list::ManifestList;
 pub use manifest::Manifest;
 */
 pub use metadata::TableMetadata;
+pub use manifest_list::ManifestList;

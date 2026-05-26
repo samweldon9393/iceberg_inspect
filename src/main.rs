@@ -28,4 +28,7 @@ fn main() {
     let manifest_list_path = cur_snapshot.get_manifest_list_path()
         .expect("Failed to get manifest list path from current snapshot");
     println!("Manifest List Path: {:?}\n\n", manifest_list_path);
+    
+    let manifest_list = parse::ManifestList::from_file(&manifest_list_path);
+    println!("Manifest List Records: {:?}\n\n", manifest_list.records);
 }
