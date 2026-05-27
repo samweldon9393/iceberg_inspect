@@ -1,5 +1,6 @@
 use apache_avro::{Reader, from_value};
 use serde::{Deserialize};
+use anyhow::Result as AnyResult;
 
 #[derive(Default, Debug, Clone)]
 pub struct ManifestList {
@@ -28,19 +29,19 @@ impl ManifestList {
         self.records.push(record);
     }
 
-    pub fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
+    pub fn from_file(path: &str) -> AnyResult<Self> {
         let file = std::fs::File::open(path)?;
         let reader = Reader::new(file)?;
         let mut manifest_list = ManifestList::default();
 
         for record in reader {
-            let record = record.expect("Failed to read record from Avro file");
+            let record = record?;
             if let Ok(manifest_record) = from_value::<ManifestListRecord>(&record) {
                 manifest_list.add_record(manifest_record);
             }
         }
 
-        Ok(manifest_list)
+        anyhow::Ok(manifest_list)
     }
 }
 

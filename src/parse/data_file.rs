@@ -1,7 +1,7 @@
 use arrow::util::pretty::print_batches;
 use parquet::arrow::arrow_reader::ParquetRecordBatchReaderBuilder;
-use parquet::errors::Result;
 use std::fs::File;
+use anyhow::Result as AnyResult;
 
 #[derive(Debug, Clone, serde::Deserialize)]
 #[allow(dead_code)]
@@ -16,14 +16,14 @@ pub struct DataFileRecord {
 }
 
 impl DataFileRecord {
-    pub fn to_arrow(&self) -> Result<Vec<arrow::record_batch::RecordBatch>> {
+    pub fn to_arrow(&self) -> AnyResult<Vec<arrow::record_batch::RecordBatch>> {
         let file = File::open(&self.file_path)?;
         let reader = ParquetRecordBatchReaderBuilder::try_new(file)?.build()?;
         let batches = reader
-            .collect::<Result<Vec<arrow::record_batch::RecordBatch>, arrow::error::ArrowError>>()?;
+            .collect::<AnyResult<Vec<arrow::record_batch::RecordBatch>, arrow::error::ArrowError>>()?;
         Ok(batches)
     }
-    pub fn print_parquet_file(&self) -> Result<()> {
+    pub fn print_parquet_file(&self) -> AnyResult<()> {
         let batches = self.to_arrow()?;
         print_batches(&batches)?;
         Ok(())

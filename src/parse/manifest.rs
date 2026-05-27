@@ -1,5 +1,5 @@
 use super::data_file::DataFileRecord;
-use std::hash::Hash;
+use anyhow::Result as AnyResult;
 
 use apache_avro::{Reader, from_value, types::Value};
 use serde::{Deserialize};
@@ -20,12 +20,12 @@ pub struct ManifestFile {
 }
 
 impl ManifestFile {
-    pub fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
+    pub fn from_file(path: &str) -> AnyResult<Self> {
         let file = std::fs::File::open(path)?;
         let reader = Reader::new(file)?;
         let record = reader.into_iter().next().unwrap()?;
         from_value(&record)
-            .map_err(|e| Box::new(e) as Box<dyn std::error::Error>)
+            .map_err(|e| anyhow::anyhow!("Failed to parse manifest file: {}", e))
     }
 }
 

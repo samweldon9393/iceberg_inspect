@@ -2,6 +2,7 @@ mod parse;
 mod commands;
 
 use clap::Parser;
+use anyhow::Result as AnyResult;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -13,16 +14,20 @@ struct Args {
     /// Command to execute [snapshots, schema, files, read]
     #[arg(short, long)]
     command: String,
+    
+    // Snapshot to inspect (optional, used for read, schema and files commands)
+    #[arg(short, long)]
+    snapshot: Option<String>,
 }
 
-fn main() {
+fn main() -> AnyResult<()> {
     let args = Args::parse();
 
     match args.command.as_str() {
         "snapshots" => commands::list_snapshots(&args.table),
-        "schema" => println!("Schema command not implemented yet"),
-        "files" => println!("Files command not implemented yet"),
-        "read" => println!("Read command not implemented yet"),
-        _ => println!("Unknown command: {}", args.command),
+        "schema" => commands::show_schema(&args.table, args.snapshot.as_deref()),
+        "files" => anyhow::bail!("Files command not implemented yet"),
+        "read" => anyhow::bail!("Read command not implemented yet"),
+        _ => anyhow::bail!("Unknown command: {}", args.command),
     } 
 }

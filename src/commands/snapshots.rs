@@ -1,11 +1,11 @@
 use iceberg_inspect::parse;
+use anyhow::Result;
 
 use comfy_table::*;
 
-
-pub fn list_snapshots(table: &str) {
-    let metadata = parse::metadata::TableMetadata::from_file(table)
-        .expect("Failed to read metadata");
+// TODO - Add ability to filter snapshots by timestamp or sequence number
+pub fn list_snapshots(table: &str) -> anyhow::Result<()> {
+    let metadata = parse::metadata::TableMetadata::from_file(table)?;
     println!("Table UUID: {:?}", metadata.table_uuid.unwrap_or_default());
     
     let snapshots = metadata.snapshots.unwrap_or_default();
@@ -25,4 +25,5 @@ pub fn list_snapshots(table: &str) {
     }
 
     println!("{}", table);
+    anyhow::Ok(())
 }

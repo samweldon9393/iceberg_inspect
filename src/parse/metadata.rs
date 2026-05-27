@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, hash::Hash};
+use anyhow::Result as AnyResult;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TableMetadata {
@@ -86,7 +87,7 @@ pub struct Snapshot {
 }
 
 impl TableMetadata {
-    pub fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
+    pub fn from_file(path: &str) -> AnyResult<Self> {
         let json_str = std::fs::read_to_string(path)?;
         let metadata: TableMetadata = serde_json::from_str(&json_str)?;
         Ok(metadata)
