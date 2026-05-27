@@ -26,7 +26,7 @@ fn main() -> AnyResult<()> {
     match args.command.as_str() {
         "snapshots" => commands::list_snapshots(&args.table),
         "schema" => commands::show_schema(&args.table, args.snapshot.as_deref()),
-        "files" => anyhow::bail!("Files command not implemented yet"),
+        "files" => commands::list_files(&args.table, args.snapshot.as_deref()),
         "read" => anyhow::bail!("Read command not implemented yet"),
         _ => anyhow::bail!("Unknown command: {}", args.command),
     } 
