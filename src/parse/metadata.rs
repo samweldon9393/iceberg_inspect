@@ -1,33 +1,32 @@
-use arrow::datatypes::Schema;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, hash::Hash};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TableMetadata {
     #[serde(rename = "format-version")]
-    format_version: Option<u8>,
-    location: Option<String>,
+    pub format_version: Option<u8>,
+    pub location: Option<String>,
     #[serde(rename = "table-uuid")]
     table_uuid: Option<String>,
     #[serde(rename = "current-snapshot-id")]
-    current_snapshot_id: Option<i64>,
-    snapshots: Option<Vec<Snapshot>>,
-    schemas: Option<Vec<TableSchema>>,
+    pub current_snapshot_id: Option<i64>,
+    pub snapshots: Option<Vec<Snapshot>>,
+    pub schemas: Option<Vec<TableSchema>>,
     #[serde(rename = "current-schema-id")]
     current_schema_id: Option<i32>,
 
     #[serde(rename = "last-updated-ms")]
-    last_updated_ms: Option<i64>,
+    pub last_updated_ms: Option<i64>,
     #[serde(rename = "last-column-id")]
-    last_column_id: Option<i32>,
+    pub last_column_id: Option<i32>,
     #[serde(rename = "default-spec-id")]
-    default_spec_id: Option<i32>,
+    pub default_spec_id: Option<i32>,
     #[serde(rename = "last-partition-id")]
-    last_partition_id: Option<i32>,
+    pub last_partition_id: Option<i32>,
     #[serde(rename = "default-sort-order-id")]
     default_sort_order_id: Option<i32>,
     #[serde(rename = "last-sequence-number")]
-    last_sequence_number: Option<i64>,
+    pub last_sequence_number: Option<i64>,
 
     /*
     Complex types that may not be needed
@@ -46,23 +45,23 @@ pub struct TableMetadata {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TableSchema {
     #[serde(rename = "type")]
-    _type: Option<String>,  // e.g., "struct"
-    fields: Option<Vec<SchemaField>>,  // List of fields with their types and other metadata
+    pub _type: Option<String>,  // e.g., "struct"
+    pub fields: Option<Vec<SchemaField>>,  // List of fields with their types and other metadata
     #[serde(rename = "identifier-field-ids")]
-    identifier_field_ids: Option<Vec<i32>>,
+    pub identifier_field_ids: Option<Vec<i32>>,
     #[serde(rename = "schema-id")]
     schema_id: Option<i32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SchemaField {
-    id: Option<i32>,
-    name: Option<String>,
+    pub id: Option<i32>,
+    pub name: Option<String>,
     #[serde(rename = "type")]
-    _type: Option<String>,  // e.g., "string", "integer", "struct", "list", "map", etc.
-    required: Option<bool>,
-    doc: Option<String>,
-    default: Option<serde_json::Value>,  // Default value for the field, if any
+    pub _type: Option<String>,  // e.g., "string", "integer", "struct", "list", "map", etc.
+    pub required: Option<bool>,
+    pub doc: Option<String>,
+    pub default: Option<serde_json::Value>,  // Default value for the field, if any
     // For complex types like struct, list, map, we might need additional metadata
     // For example, for struct we might have a list of nested fields, for list we might have an element type, etc.
     // This can be represented as a recursive structure or as a more flexible JSON value depending on the complexity of the types we want to support.
@@ -72,18 +71,18 @@ pub struct SchemaField {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Snapshot {
     #[serde(rename = "snapshot-id")]
-    snapshot_id: Option<i64>,
+    pub snapshot_id: Option<i64>,
     #[serde(rename = "sequence-number")]
-    sequence_number: Option<i64>,
+    pub sequence_number: Option<i64>,
     #[serde(rename = "schema-id")]
-    schema_id: Option<i32>,
+    pub schema_id: Option<i32>,
     #[serde(rename = "parent-snapshot-id")]
-    parent_snapshot_id: Option<i64>,
+    pub parent_snapshot_id: Option<i64>,
     #[serde(rename = "timestamp-ms")]
-    timestamp_ms: Option<i64>,
+    pub timestamp_ms: Option<i64>,
     #[serde(rename = "manifest-list")]
-    manifest_list: Option<String>,  // path to the Avro manifest list file
-    summary: Option<HashMap<String, String>>,
+    pub manifest_list: Option<String>,  // path to the Avro manifest list file
+    pub summary: Option<HashMap<String, String>>,
 }
 
 impl TableMetadata {
@@ -115,5 +114,17 @@ impl Snapshot {
         } else {
             None
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_from_file() {
+        // TODO change to use S3 once that's added later
+        let metadata = TableMetadata::from_file("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json").unwrap();
+        assert_eq!(metadata.table_uuid, Some("3aaeb9f7-207f-4d66-91d5-b46c433d359b".into()));
     }
 }

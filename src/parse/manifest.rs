@@ -1,9 +1,11 @@
+use super::data_file::DataFileRecord;
 use std::hash::Hash;
 
 use apache_avro::{Reader, from_value, types::Value};
 use serde::{Deserialize};
 
 #[derive(Debug, Clone, Deserialize)]
+#[allow(dead_code)]
 pub struct ManifestFile {
     pub status: i32,
     pub snapshot_id: i64,
@@ -17,28 +19,23 @@ pub struct ManifestFile {
     pub sort_order_id: Option<i64>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-pub struct DataFileRecord {
-    pub content: i32,
-    pub file_path: String,
-    pub file_format: String,
-    pub partition_data: Option<String>,
-    pub record_count: i64,
-    pub file_size_in_bytes: i64,
-    //pub column_sizes: Option<Vec<ColumnSize>>,
+impl ManifestFile {
+    pub fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
+        let file = std::fs::File::open(path)?;
+        let reader = Reader::new(file)?;
+        let record = reader.into_iter().next().unwrap()?;
+        from_value(&record)
+            .map_err(|e| Box::new(e) as Box<dyn std::error::Error>)
+    }
 }
 
-impl ManifestFile {
-    pub fn from_file(path: &str) -> ManifestFile {
-        let file = std::fs::File::open(path)
-            .expect("Failed to open manifest file");
-        let reader = Reader::new(file)
-            .expect("Failed to create Avro reader");
-        let record = reader.into_iter().next()
-            .expect("No records found in manifest file")
-            .expect("Failed to read record from Avro file");
-        from_value(&record)
-            .expect("Failed to parse record")
-    }
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-}  
+    #[test]
+    fn test_from_file() {
+        let manifest = ManifestFile::from_file("./taxis/metadata/d6877f7e-bceb-480d-a2a0-d63fbe20045f-m0.avro").unwrap();
+        assert_eq!(manifest.snapshot_id, 7143047217624574150);
+    }
+}
