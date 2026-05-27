@@ -55,3 +55,15 @@ pub fn list_files(table: &str, snapshot_id: Option<&str>) -> AnyResult<()> {
     println!("{}", table);
     anyhow::Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_list_files() {
+        // This test assumes you have a valid Iceberg table metadata file at the specified path.
+        let result = list_files("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json", None);
+        assert!(result.is_ok());
+    }
+}
