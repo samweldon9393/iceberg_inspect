@@ -7,13 +7,13 @@ pub struct TableMetadata {
     pub format_version: Option<u8>,
     pub location: Option<String>,
     #[serde(rename = "table-uuid")]
-    table_uuid: Option<String>,
+    pub table_uuid: Option<String>,
     #[serde(rename = "current-snapshot-id")]
     pub current_snapshot_id: Option<i64>,
     pub snapshots: Option<Vec<Snapshot>>,
     pub schemas: Option<Vec<TableSchema>>,
     #[serde(rename = "current-schema-id")]
-    current_schema_id: Option<i32>,
+    pub current_schema_id: Option<i32>,
 
     #[serde(rename = "last-updated-ms")]
     pub last_updated_ms: Option<i64>,
@@ -24,7 +24,7 @@ pub struct TableMetadata {
     #[serde(rename = "last-partition-id")]
     pub last_partition_id: Option<i32>,
     #[serde(rename = "default-sort-order-id")]
-    default_sort_order_id: Option<i32>,
+    pub default_sort_order_id: Option<i32>,
     #[serde(rename = "last-sequence-number")]
     pub last_sequence_number: Option<i64>,
 
@@ -50,7 +50,7 @@ pub struct TableSchema {
     #[serde(rename = "identifier-field-ids")]
     pub identifier_field_ids: Option<Vec<i32>>,
     #[serde(rename = "schema-id")]
-    schema_id: Option<i32>,
+    pub schema_id: Option<i32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

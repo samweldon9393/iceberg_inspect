@@ -1,7 +1,7 @@
-mod data_file;
-mod manifest_list;
-mod manifest;
-mod metadata;
+pub mod data_file;
+pub mod manifest_list;
+pub mod manifest;
+pub mod metadata;
 /* 
 */
 pub use metadata::TableMetadata;
