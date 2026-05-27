@@ -1,19 +1,19 @@
 use iceberg_inspect::parse;
 
-use comfy_table::Table;
+use comfy_table::*;
 
 
 pub fn list_snapshots(table: &str) {
-    println!("Executing snapshots command with argument: {}", table);
-    
     let metadata = parse::metadata::TableMetadata::from_file(table)
         .expect("Failed to read metadata");
-    println!("Table UUID: {:?}", metadata.table_uuid);
+    println!("Table UUID: {:?}", metadata.table_uuid.unwrap_or_default());
     
     let snapshots = metadata.snapshots.unwrap_or_default();
     let mut table = comfy_table::Table::new();
-    table.load_preset(comfy_table::presets::UTF8_FULL);
-    table.set_header(vec!["Snapshot ID", "Sequence Number", "Parent Snapshot ID", "Timestamp (ms)"]);
+    table
+        .load_preset(comfy_table::presets::UTF8_FULL)
+        .set_content_arrangement(ContentArrangement::Dynamic)
+        .set_header(vec!["Snapshot ID", "Sequence Number", "Parent Snapshot ID", "Timestamp (ms)"]);
 
     for snapshot in snapshots {
         table.add_row(vec![
