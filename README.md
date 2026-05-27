@@ -21,7 +21,7 @@ iceberg-inspect --table <path-to-metadata.json> --command <command> [--snapshot 
 |-------------|-----------------------------------------------------|
 | `snapshots` | List all snapshots with ID, sequence number, parent, and timestamp |
 | `schema`    | Show the schema for a snapshot (defaults to the latest) |
-| `files`     | *(not yet implemented)* List data files in a snapshot |
+| `files`     | List data files in a snapshot |
 | `read`      | *(not yet implemented)* Read rows from a snapshot   |
 
 ### Options
@@ -46,17 +46,17 @@ Show the schema for the latest snapshot:
 iceberg-inspect --table /path/to/warehouse/my_table/metadata/v3.metadata.json --command schema
 ```
 
-Show the schema for a specific snapshot:
+List the data files in a specific snapshot:
 
 ```bash
 iceberg-inspect --table /path/to/warehouse/my_table/metadata/v3.metadata.json \
-  --command schema \
+  --command files \
   --snapshot 8728349182736491
 ```
+ 
 
 ## Roadmap
 
-- [ ] `files` command — list data files for a snapshot
 - [ ] `read` command — display rows from Parquet data files
 - [ ] S3/object-store support for remote tables
 - [ ] Filter snapshots by timestamp or sequence number
