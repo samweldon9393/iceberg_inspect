@@ -12,7 +12,7 @@ pub fn list_snapshots(table: &str) {
     
     let snapshots = metadata.snapshots.unwrap_or_default();
     let mut table = comfy_table::Table::new();
-    table.load_preset(comfy_table::presets::NOTHING);
+    table.load_preset(comfy_table::presets::UTF8_FULL);
     table.set_header(vec!["Snapshot ID", "Sequence Number", "Parent Snapshot ID", "Timestamp (ms)"]);
 
     for snapshot in snapshots {
