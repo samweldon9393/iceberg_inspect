@@ -55,3 +55,15 @@ pub fn show_schema(table: &str, snapshot_id: Option<&str>) -> AnyResult<()> {
 
     anyhow::Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_show_schema() {
+        // TODO change to use S3 once that's added later
+        let result = show_schema("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json", None);
+        assert!(result.is_ok());
+    }
+}
