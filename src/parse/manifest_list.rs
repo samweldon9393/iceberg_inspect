@@ -2,6 +2,8 @@ use apache_avro::{Reader, from_value};
 use serde::{Deserialize};
 use anyhow::Result as AnyResult;
 
+use crate::parse;
+
 #[derive(Default, Debug, Clone)]
 pub struct ManifestList {
     pub records: Vec<ManifestListRecord>,
@@ -33,8 +35,8 @@ impl ManifestList {
 
     #[allow(dead_code)]
     pub fn from_file(path: &str) -> AnyResult<Self> {
-        let file = std::fs::File::open(path)?;
-        let reader = Reader::new(file)?;
+        let cursor = parse::read_bytes(path)?;
+        let reader = Reader::new(cursor)?;
         let mut manifest_list = ManifestList::default();
 
         for record in reader {

@@ -5,6 +5,7 @@
  * including manifest lists, manifest files, and data files.
  */
 use anyhow::Result as AnyResult;
+use std::io::Cursor;
 
 pub mod data_file;
 pub mod manifest_list;
@@ -46,6 +47,21 @@ pub fn get_datafiles(table_path: &str, snapshot_id: Option<&str>) -> AnyResult<V
         files.push(manifest.data_file);
     }
     anyhow::Ok(files)
+}
+
+pub fn read_bytes(path: &str) -> AnyResult<Cursor<Vec<u8>>> {
+    if path.starts_with("s3://") {
+        /* TODO Implement S3 
+        let (bucket, key) = parse_s3_path(path);
+        let store = AmazonS3Builder::from_env().with_bucket_name(bucket).build()?;
+        Ok(store.get(&key.into()).await?.bytes().await?)
+        */
+        let bytes = std::fs::read(path)?;
+        anyhow::Ok(std::io::Cursor::new(bytes))
+    } else {
+        let bytes = std::fs::read(path)?;
+        anyhow::Ok(std::io::Cursor::new(bytes))
+    }
 }
 
 #[cfg(test)]

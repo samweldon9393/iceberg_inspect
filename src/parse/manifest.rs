@@ -1,8 +1,10 @@
 use super::data_file::DataFileRecord;
 use anyhow::Result as AnyResult;
+use std::io::Cursor;
 
 use apache_avro::{Reader, from_value};
 use serde::{Deserialize};
+use crate::parse::read_bytes;
 
 #[derive(Debug, Clone, Deserialize)]
 #[allow(dead_code)]
@@ -22,8 +24,8 @@ pub struct ManifestFile {
 impl ManifestFile {
     #[allow(dead_code)]
     pub fn from_file(path: &str) -> AnyResult<Self> {
-        let file = std::fs::File::open(path)?;
-        let reader = Reader::new(file)?;
+        let cursor = read_bytes(path)?;
+        let reader = Reader::new(cursor)?;
         let record = reader.into_iter().next().unwrap()?;
         from_value(&record)
             .map_err(|e| anyhow::anyhow!("Failed to parse manifest file: {}", e))

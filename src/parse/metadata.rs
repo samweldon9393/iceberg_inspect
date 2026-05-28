@@ -2,6 +2,8 @@ use serde::{Deserialize, Serialize};
 use std::{collections::HashMap};
 use anyhow::Result as AnyResult;
 
+use crate::parse;
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TableMetadata {
     #[serde(rename = "format-version")]
@@ -90,7 +92,8 @@ pub struct Snapshot {
 impl TableMetadata {
     #[allow(dead_code)]
     pub fn from_file(path: &str) -> AnyResult<Self> {
-        let json_str = std::fs::read_to_string(path)?;
+        let cursor = parse::read_bytes(path)?;
+        let json_str = std::io::read_to_string(cursor)?;
         let metadata: TableMetadata = serde_json::from_str(&json_str)?;
         Ok(metadata)
     }
