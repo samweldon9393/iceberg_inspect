@@ -12,7 +12,7 @@ cargo build --release
 ## Usage
 
 ```
-iceberg-inspect --table <path-to-metadata.json> --command <command> [--snapshot <snapshot-id> --limit <num-rows> --columns <column,names>]
+iceberg-inspect --table <path-to-metadata.json> --command <command> [--snapshot <snapshot-id> --limit <num-rows> --columns <column,names> --region <S3-region>]
 ```
 
 ### Commands
@@ -33,16 +33,17 @@ iceberg-inspect --table <path-to-metadata.json> --command <command> [--snapshot 
 | `-s, --snapshot`  | Snapshot ID to inspect (optional; defaults to the latest)        |
 | `--columns`   | Collumns to print (optional, used for read command; defaults to all columns)                                         |
 | `--limit`  | Max number of rows to print (optional, used for read command; defaults to all rows)        |
+| `-r, --region`  | Amazon S3 region (only used with S3 buckets)        |
 
 ### Examples
 
-List all snapshots for a table:
+List all snapshots for a table in S3:
 
 ```bash
-iceberg-inspect --table /path/to/warehouse/my_table/metadata/v3.metadata.json --command snapshots
+iceberg-inspect -t s3://path/to/warehouse/my_table/metadata/v3.metadata.json -r us-east-1 -c snapshots
 ```
 
-Show the schema for the latest snapshot:
+Show the schema for the latest snapshot for a local table:
 
 ```bash
 iceberg-inspect --table /path/to/warehouse/my_table/metadata/v3.metadata.json --command schema
@@ -56,10 +57,11 @@ iceberg-inspect --table /path/to/warehouse/my_table/metadata/v3.metadata.json \
   --snapshot 8728349182736491
 ```
 
-Print 10 rows, project onto three columns
+Print 10 rows, project onto three columns:
 
 ```bash
-iceberg-inspect --table /path/to/warehouse/my_table/metadata/v3.metadata.json \
+iceberg-inspect --table s3://path/to/warehouse/my_table/metadata/v3.metadata.json \
+  --region us-east-1 \
   --command read \
   --columns VendorID,fare_amount,extra
   --limit 10
@@ -68,7 +70,6 @@ iceberg-inspect --table /path/to/warehouse/my_table/metadata/v3.metadata.json \
 
 ## Roadmap
 
-- [ ] S3/object-store support for remote tables
 - [ ] Filter snapshots by timestamp or sequence number
 
 ## Dependencies
