@@ -57,7 +57,7 @@ iceberg-inspect --table /path/to/warehouse/my_table/metadata/v3.metadata.json \
   --snapshot 8728349182736491
 ```
 
-Print 10 rows, project onto three columns
+Print 10 rows, project onto three columns:
 
 ```bash
 iceberg-inspect --table s3://path/to/warehouse/my_table/metadata/v3.metadata.json \
