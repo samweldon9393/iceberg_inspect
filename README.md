@@ -1,6 +1,6 @@
 # iceberg-inspect
 
-A CLI tool for inspecting [Apache Iceberg](https://iceberg.apache.org/) tables from the command line. Reads table metadata directly from the filesystem and displays snapshots, schema, and (soon) data files and row-level content in a formatted terminal table.
+A CLI tool for inspecting [Apache Iceberg](https://iceberg.apache.org/) tables from the command line. Reads table metadata directly from the filesystem and displays snapshots, schema, data files and row-level content in a formatted terminal table.
 
 ## Installation
 
@@ -12,7 +12,7 @@ cargo build --release
 ## Usage
 
 ```
-iceberg-inspect --table <path-to-metadata.json> --command <command> [--snapshot <snapshot-id>]
+iceberg-inspect --table <path-to-metadata.json> --command <command> [--snapshot <snapshot-id> --limit <num-rows> --columns <column,names>]
 ```
 
 ### Commands
@@ -31,7 +31,7 @@ iceberg-inspect --table <path-to-metadata.json> --command <command> [--snapshot 
 | `-t, --table`     | Path to the table's `metadata.json` file (required)              |
 | `-c, --command`   | Command to run (required)                                         |
 | `-s, --snapshot`  | Snapshot ID to inspect (optional; defaults to the latest)        |
-| `--collumns`   | Collumns to print (optional, used for read command; defaults to all columns)                                         |
+| `--columns`   | Collumns to print (optional, used for read command; defaults to all columns)                                         |
 | `--limit`  | Max number of rows to print (optional, used for read command; defaults to all rows)        |
 
 ### Examples
