@@ -6,12 +6,7 @@ use comfy_table::*;
 pub fn list_files(table: &str, snapshot_id: Option<&str>) -> AnyResult<()> {
     /* Start by parsing the table metadata to get the correct manifest list (snapshot) */
     let metadata = parse::metadata::TableMetadata::from_file(table)?;
-    let snapshots = metadata.snapshots.unwrap_or_default();
-    let snapshot = if let Some(sid) = snapshot_id {
-        snapshots.into_iter().find(|s| s.snapshot_id.as_ref().map(|id| id.to_string()) == Some(sid.to_string()))
-    } else {
-        snapshots.into_iter().max_by_key(|s| s.timestamp_ms.unwrap_or_default())
-    };
+    let snapshot = metadata.get_snapshot(snapshot_id);
     let manifest_list_path = if let Some(snapshot_unwrapped) = snapshot {
         snapshot_unwrapped.get_manifest_list_path()
     } else {

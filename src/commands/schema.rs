@@ -6,15 +6,8 @@ use comfy_table::*;
 
 pub fn show_schema(table: &str, snapshot_id: Option<&str>) -> AnyResult<()> {
     let metadata = parse::metadata::TableMetadata::from_file(table)?;
-    println!("Table UUID: {:?}", metadata.table_uuid.unwrap_or_default());
-    
-    let snapshots = metadata.snapshots.unwrap_or_default();
-    let snapshot = if let Some(sid) = snapshot_id {
-        snapshots.into_iter().find(|s| s.snapshot_id.as_ref().map(|id| id.to_string()) == Some(sid.to_string()))
-    } else {
-        snapshots.into_iter().max_by_key(|s| s.timestamp_ms.unwrap_or_default())
-    };
-
+    let snapshot = metadata.get_snapshot(snapshot_id);
+        
     if let Some(snapshot_unwrapped) = snapshot {
         if let Some(schema_id) = snapshot_unwrapped.schema_id {
             if let Some(schemas) = metadata.schemas {

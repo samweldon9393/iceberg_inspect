@@ -1,7 +1,7 @@
 use super::data_file::DataFileRecord;
 use anyhow::Result as AnyResult;
 
-use apache_avro::{Reader, from_value, types::Value};
+use apache_avro::{Reader, from_value};
 use serde::{Deserialize};
 
 #[derive(Debug, Clone, Deserialize)]
@@ -20,6 +20,7 @@ pub struct ManifestFile {
 }
 
 impl ManifestFile {
+    #[allow(dead_code)]
     pub fn from_file(path: &str) -> AnyResult<Self> {
         let file = std::fs::File::open(path)?;
         let reader = Reader::new(file)?;

@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, hash::Hash};
+use std::{collections::HashMap};
 use anyhow::Result as AnyResult;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -86,18 +86,21 @@ pub struct Snapshot {
     pub summary: Option<HashMap<String, String>>,
 }
 
+
 impl TableMetadata {
+    #[allow(dead_code)]
     pub fn from_file(path: &str) -> AnyResult<Self> {
         let json_str = std::fs::read_to_string(path)?;
         let metadata: TableMetadata = serde_json::from_str(&json_str)?;
         Ok(metadata)
     }
 
-    #[allow(dead_code)] // TODO needed?
+    #[allow(dead_code)]
     pub fn from_json(json_str: &str) -> Result<Self, serde_json::Error> {
         serde_json::from_str(json_str)
     }
     
+    #[allow(dead_code)]
     pub fn get_current_snapshot(&self) -> Option<&Snapshot> {
         if let Some(current_snapshot_id) = self.current_snapshot_id {
             if let Some(snapshots) = &self.snapshots {
@@ -106,9 +109,26 @@ impl TableMetadata {
         }
         None
     }
+
+    #[allow(dead_code)]
+    pub fn get_snapshot(&self, snapshot_id: Option<&str>) -> Option<&Snapshot> {
+        if let Some(sid) = snapshot_id {
+            if let Some(snapshots) = &self.snapshots {
+                return snapshots
+                    .iter()
+                    .find(|s| s.snapshot_id == Some(sid.parse::<i64>().unwrap_or_default()));
+            }
+            else {
+                return None;
+            }
+        } else {
+            return self.get_current_snapshot();
+        }
+    }
 }
 
 impl Snapshot {
+    #[allow(dead_code)]
     pub fn get_manifest_list_path(&self) -> Option<String> {
         if let Some(manifest_list_path) = &self.manifest_list {
             Some(manifest_list_path.clone())

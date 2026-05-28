@@ -1,13 +1,12 @@
 use iceberg_inspect::parse;
-use anyhow::Result;
+use anyhow::Result as AnyResult;
 use std::collections::HashMap;
 
 use comfy_table::*;
 
 // TODO - Add ability to filter snapshots by timestamp or sequence number
-pub fn list_snapshots(table: &str) -> anyhow::Result<()> {
+pub fn list_snapshots(table: &str) -> AnyResult<()> {
     let metadata = parse::metadata::TableMetadata::from_file(table)?;
-    println!("Table UUID: {:?}", metadata.table_uuid.unwrap_or_default());
     
     let snapshots = metadata.snapshots.unwrap_or_default();
     let mut table = comfy_table::Table::new();

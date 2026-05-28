@@ -1,3 +1,9 @@
+/**
+ * main.rs
+ * 
+ * This is the main entry point for the Iceberg inspect tool.
+ */
+
 mod parse;
 mod commands;
 

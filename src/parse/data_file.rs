@@ -23,6 +23,7 @@ impl DataFileRecord {
             .collect::<AnyResult<Vec<arrow::record_batch::RecordBatch>, arrow::error::ArrowError>>()?;
         Ok(batches)
     }
+    #[allow(dead_code)]
     pub fn print_parquet_file(&self) -> AnyResult<()> {
         let batches = self.to_arrow()?;
         print_batches(&batches)?;

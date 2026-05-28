@@ -20,15 +20,18 @@ pub struct ManifestListRecord {
 }
 
 impl ManifestList {
+    #[allow(dead_code)]
     pub fn default() -> Self {
         ManifestList {
             records: Vec::new(),
         }
     }
+    #[allow(dead_code)]
     pub fn add_record(&mut self, record: ManifestListRecord) {
         self.records.push(record);
     }
 
+    #[allow(dead_code)]
     pub fn from_file(path: &str) -> AnyResult<Self> {
         let file = std::fs::File::open(path)?;
         let reader = Reader::new(file)?;
