@@ -96,11 +96,6 @@ impl TableMetadata {
     }
 
     #[allow(dead_code)]
-    pub fn from_json(json_str: &str) -> Result<Self, serde_json::Error> {
-        serde_json::from_str(json_str)
-    }
-    
-    #[allow(dead_code)]
     pub fn get_current_snapshot(&self) -> Option<&Snapshot> {
         if let Some(current_snapshot_id) = self.current_snapshot_id {
             if let Some(snapshots) = &self.snapshots {

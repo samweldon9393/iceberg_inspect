@@ -6,7 +6,6 @@ pub fn read(
     snapshot_id: Option<&str>,
     limit_total: Option<usize>,
     columns: &[String]) -> AnyResult<()> {
-    eprint!("columns: {:?}\n", columns);
     let mut limit = limit_total;
     let data_files = parse::get_datafiles(table_path, snapshot_id)?;
 
@@ -39,4 +38,15 @@ pub fn read(
     }
 
     anyhow::Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_read() {
+        let table_path = "./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json";
+        read(table_path, None, Some(5), &vec![]).unwrap();
+    }
 }
