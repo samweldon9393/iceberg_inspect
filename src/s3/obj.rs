@@ -20,9 +20,21 @@ pub fn get_object_key_from_path(path: &str) -> AnyResult<String> {
     }
 }
 
-/*
-pub fn get_s3_store(path: &str) -> AnyResult<dyn ObjectStore> {
-    let bucket = get_bucket_name_from_path(path)?;
-    AmazonS3Builder::from_env().with_bucket_name(bucket).build()
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_get_bucket_name_from_path() {
+        let bn = get_bucket_name_from_path("s3://iceberg-sandbox/mydb/mytable/metadata/00002-a0902076-c7b9-4be2-83e1-5987041a6779.metadata.json")
+            .expect("Failed to parse bucket name");
+        assert_eq!(bn, String::from("iceberg-sandbox"));
+    }
+
+    #[test]
+    fn test_get_object_key_from_path() {
+        let bn = get_object_key_from_path("s3://iceberg-sandbox/mydb/mytable/metadata/00002-a0902076-c7b9-4be2-83e1-5987041a6779.metadata.json")
+            .expect("Failed to parse object key");
+        assert_eq!(bn, String::from("mydb/mytable/metadata/00002-a0902076-c7b9-4be2-83e1-5987041a6779.metadata.json"));
+    }
 }
-*/
