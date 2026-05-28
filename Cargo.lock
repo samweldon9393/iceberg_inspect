@@ -1112,6 +1112,7 @@ dependencies = [
  "anyhow",
  "apache-avro",
  "arrow",
+ "bytes",
  "chrono",
  "clap",
  "comfy-table",

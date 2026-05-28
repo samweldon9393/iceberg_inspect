@@ -11,7 +11,7 @@ pub async fn read(
     let data_files = parse::get_datafiles(table_path, region, snapshot_id).await?;
 
     for data_file in data_files {
-        let batches = data_file.to_arrow()?;
+        let batches = data_file.to_arrow(region).await?;
         for batch in batches {
             let selected_batch = if columns.is_empty() {
                 batch
