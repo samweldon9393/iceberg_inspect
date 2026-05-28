@@ -31,7 +31,7 @@ mod tests {
     #[tokio::test]
     async fn test_list_files() {
         // This test assumes you have a valid Iceberg table metadata file at the specified path.
-        let result = list_files("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json", Some(""), None);
+        let result = list_files("s3://iceberg-sandbox/mydb/mytable/metadata/00002-a0902076-c7b9-4be2-83e1-5987041a6779.metadata.json", Some("us-east-2"), None);
         assert!(result.await.is_ok());
     }
 }

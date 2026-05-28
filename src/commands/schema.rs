@@ -56,7 +56,7 @@ mod tests {
     #[tokio::test]
     async fn test_show_schema() {
         // TODO change to use S3 once that's added later
-        let result = show_schema("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json", Some(""), None);
+        let result = show_schema("s3://iceberg-sandbox/mydb/mytable/metadata/00002-a0902076-c7b9-4be2-83e1-5987041a6779.metadata.json", Some("us-east-2"), None);
         assert!(result.await.is_ok());
     }
 }

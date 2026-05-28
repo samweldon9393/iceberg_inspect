@@ -47,7 +47,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_read() {
-        let table_path = "./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json";
-        read(table_path, Some(""), None, Some(5), &vec![]).await.unwrap();
+        let table_path = "s3://iceberg-sandbox/mydb/mytable/metadata/00002-a0902076-c7b9-4be2-83e1-5987041a6779.metadata.json";
+        read(table_path, Some("us-east-2"), None, Some(5), &vec![]).await.unwrap();
     }
 }

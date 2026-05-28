@@ -59,7 +59,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_from_file() {
-        let manifest_list = ManifestList::from_file("./taxis/metadata/snap-7143047217624574150-0-d6877f7e-bceb-480d-a2a0-d63fbe20045f.avro", Some("")).await.unwrap();
-        assert_eq!(manifest_list.records[0].manifest_length, 6688);
+        let manifest_list = ManifestList::from_file("s3://iceberg-sandbox/mydb/mytable/metadata/snap-7065593814654901936-0-0d3e3d48-0988-4ed8-b3c5-71cf36d0ce61.avro", Some("us-east-2")).await.unwrap();
+        assert_eq!(manifest_list.records[0].manifest_length, 10298);
     }
 }

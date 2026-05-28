@@ -38,7 +38,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_from_file() {
-        let manifest = ManifestFile::from_file("./taxis/metadata/d6877f7e-bceb-480d-a2a0-d63fbe20045f-m0.avro", Some("")).await.unwrap();
-        assert_eq!(manifest.snapshot_id, 7143047217624574150);
+        let manifest = ManifestFile::from_file("s3://iceberg-sandbox/mydb/mytable/metadata/543eb621-64d7-440c-b712-5761380bfbbc-m0.avro", Some("us-east-2")).await.unwrap();
+        assert_eq!(manifest.snapshot_id, 7764732464054397413);
     }
 }

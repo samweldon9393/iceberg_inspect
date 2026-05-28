@@ -143,7 +143,7 @@ mod tests {
     #[tokio::test]
     async fn test_from_file() {
         // TODO change to use S3 once that's added later
-        let metadata = TableMetadata::from_file("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json", Some("")).await.unwrap();
-        assert_eq!(metadata.table_uuid, Some("3aaeb9f7-207f-4d66-91d5-b46c433d359b".into()));
+        let metadata = TableMetadata::from_file("s3://iceberg-sandbox/mydb/mytable/metadata/00001-b2f7cc94-92e2-4e51-a27d-0164a852d443.metadata.json", Some("us-east-2")).await.unwrap();
+        assert_eq!(metadata.table_uuid, Some("cc5c3b51-1b37-4721-b367-988bbbe40cfc".into()));
     }
 }

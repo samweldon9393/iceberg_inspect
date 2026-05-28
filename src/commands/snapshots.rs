@@ -42,7 +42,7 @@ mod tests {
     #[tokio::test]
     async fn test_list_snapshots() {
         // TODO change to use S3 once that's added later
-        let result = list_snapshots("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json", Some(""));
+        let result = list_snapshots("s3://iceberg-sandbox/mydb/mytable/metadata/00002-a0902076-c7b9-4be2-83e1-5987041a6779.metadata.json", Some("us-east-2"));
         assert!(result.await.is_ok());
     }
 }

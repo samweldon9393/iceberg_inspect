@@ -42,13 +42,13 @@ mod tests {
     async fn test_to_arrow() {
         let data_file = DataFileRecord {
             content: 0, //unused
-            file_path: "./taxis/data/00000-1-d6877f7e-bceb-480d-a2a0-d63fbe20045f.parquet".to_string(),
+            file_path: "s3://iceberg-sandbox/bauplan_tpcc_1_spine_setup.parquet".to_string(),
             file_format: "PARQUET".to_string(),
             partition_data: None, //unused
             record_count: 0, // unused
             file_size_in_bytes: 3570920,
         };
-        let batches = data_file.to_arrow(Some("")).await.unwrap();
+        let batches = data_file.to_arrow(Some("us-east-2")).await.unwrap();
         assert!(!batches.is_empty());
     }
 }
