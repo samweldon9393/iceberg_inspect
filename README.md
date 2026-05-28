@@ -22,7 +22,7 @@ iceberg-inspect --table <path-to-metadata.json> --command <command> [--snapshot 
 | `snapshots` | List all snapshots with ID, sequence number, parent, and timestamp |
 | `schema`    | Show the schema for a snapshot (defaults to the latest) |
 | `files`     | List data files in a snapshot |
-| `read`      | *(not yet implemented)* Read rows from a snapshot   |
+| `read`      | Read rows from a snapshot   |
 
 ### Options
 
@@ -31,6 +31,8 @@ iceberg-inspect --table <path-to-metadata.json> --command <command> [--snapshot 
 | `-t, --table`     | Path to the table's `metadata.json` file (required)              |
 | `-c, --command`   | Command to run (required)                                         |
 | `-s, --snapshot`  | Snapshot ID to inspect (optional; defaults to the latest)        |
+| `--collumns`   | Collumns to print (optional, used for read command; defaults to all columns)                                         |
+| `--limit`  | Max number of rows to print (optional, used for read command; defaults to all rows)        |
 
 ### Examples
 
@@ -53,11 +55,19 @@ iceberg-inspect --table /path/to/warehouse/my_table/metadata/v3.metadata.json \
   --command files \
   --snapshot 8728349182736491
 ```
+
+Print 10 rows, project onto three columns
+
+```bash
+iceberg-inspect --table /path/to/warehouse/my_table/metadata/v3.metadata.json \
+  --command read \
+  --columns VendorID,fare_amount,extra
+  --limit 10
+```
  
 
 ## Roadmap
 
-- [ ] `read` command — display rows from Parquet data files
 - [ ] S3/object-store support for remote tables
 - [ ] Filter snapshots by timestamp or sequence number
 
