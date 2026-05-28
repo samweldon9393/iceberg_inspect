@@ -4,8 +4,8 @@ use iceberg_inspect::parse;
 use comfy_table::*;
 
 
-pub async fn show_schema(table: &str, snapshot_id: Option<&str>) -> AnyResult<()> {
-    let metadata = parse::metadata::TableMetadata::from_file(table).await?;
+pub async fn show_schema(table: &str, region: Option<&str>, snapshot_id: Option<&str>) -> AnyResult<()> {
+    let metadata = parse::metadata::TableMetadata::from_file(table, region).await?;
     let snapshot = metadata.get_snapshot(snapshot_id);
         
     if let Some(snapshot_unwrapped) = snapshot {
@@ -56,7 +56,7 @@ mod tests {
     #[tokio::test]
     async fn test_show_schema() {
         // TODO change to use S3 once that's added later
-        let result = show_schema("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json", None);
+        let result = show_schema("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json", Some(""), None);
         assert!(result.await.is_ok());
     }
 }

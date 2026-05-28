@@ -1,3 +1,5 @@
+use std::any::Any;
+
 use apache_avro::{Reader, from_value};
 use serde::{Deserialize};
 use anyhow::Result as AnyResult;
@@ -34,8 +36,8 @@ impl ManifestList {
     }
 
     #[allow(dead_code)]
-    pub async fn from_file(path: &str) -> AnyResult<Self> {
-        let cursor = parse::read_bytes(path).await?;
+    pub async fn from_file(path: &str, region: Option<&str>) -> AnyResult<Self> {
+        let cursor = parse::read_bytes(path, region).await?;
         let reader = Reader::new(cursor)?;
         let mut manifest_list = ManifestList::default();
 
@@ -57,7 +59,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_from_file() {
-        let manifest_list = ManifestList::from_file("./taxis/metadata/snap-7143047217624574150-0-d6877f7e-bceb-480d-a2a0-d63fbe20045f.avro").await.unwrap();
+        let manifest_list = ManifestList::from_file("./taxis/metadata/snap-7143047217624574150-0-d6877f7e-bceb-480d-a2a0-d63fbe20045f.avro", Some("")).await.unwrap();
         assert_eq!(manifest_list.records[0].manifest_length, 6688);
     }
 }

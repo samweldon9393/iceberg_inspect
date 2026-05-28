@@ -5,6 +5,7 @@
  */
 
 mod parse;
+mod s3;
 mod commands;
 
 use clap::Parser;
@@ -32,6 +33,10 @@ struct Args {
     /// Columns to print, enter comma separated list (optional, used for read command)
     #[arg(long, value_delimiter = ',')]
     columns: Vec<String>,
+    
+    /// S3 bucket region (optional, used when files are in S3)
+    #[arg(short, long)]
+    region: Option<String>,
 }
 
 #[tokio::main]
@@ -39,10 +44,10 @@ async fn main() -> AnyResult<()> {
     let args = Args::parse();
 
     match args.command.as_str() {
-        "snapshots" => commands::list_snapshots(&args.table).await,
-        "schema" => commands::show_schema(&args.table, args.snapshot.as_deref()).await,
-        "files" => commands::list_files(&args.table, args.snapshot.as_deref()).await,
-        "read" => commands::read(&args.table, args.snapshot.as_deref(), args.limit, &args.columns).await,
+        "snapshots" => commands::list_snapshots(&args.table, args.region.as_deref()).await,
+        "schema" => commands::show_schema(&args.table, args.region.as_deref(), args.snapshot.as_deref()).await,
+        "files" => commands::list_files(&args.table, args.region.as_deref(), args.snapshot.as_deref()).await,
+        "read" => commands::read(&args.table, args.region.as_deref(), args.snapshot.as_deref(), args.limit, &args.columns).await,
         _ => anyhow::bail!("Unknown command: {}", args.command),
     } 
 }

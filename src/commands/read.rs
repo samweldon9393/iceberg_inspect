@@ -3,11 +3,12 @@ use anyhow::Result as AnyResult;
 
 pub async fn read(
     table_path: &str,
+    region: Option<&str>,
     snapshot_id: Option<&str>,
     limit_total: Option<usize>,
     columns: &[String]) -> AnyResult<()> {
     let mut limit = limit_total;
-    let data_files = parse::get_datafiles(table_path, snapshot_id).await?;
+    let data_files = parse::get_datafiles(table_path, region, snapshot_id).await?;
 
     for data_file in data_files {
         let batches = data_file.to_arrow()?;
@@ -47,6 +48,6 @@ mod tests {
     #[tokio::test]
     async fn test_read() {
         let table_path = "./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json";
-        read(table_path, None, Some(5), &vec![]).await.unwrap();
+        read(table_path, Some(""), None, Some(5), &vec![]).await.unwrap();
     }
 }

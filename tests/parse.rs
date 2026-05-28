@@ -2,7 +2,7 @@ use iceberg_inspect::parse;
 
 #[tokio::test]
 async fn test_full_parse() {
-    let metadata = parse::TableMetadata::from_file("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json")
+    let metadata = parse::TableMetadata::from_file("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json", Some(""))
         .await.expect("Failed to parse table metadata");
     println!("Table Metadata: {:?}\n\n", metadata);
     
@@ -14,7 +14,7 @@ async fn test_full_parse() {
         .expect("Failed to get manifest list path from current snapshot");
     println!("Manifest List Path: {:?}\n\n", manifest_list_path);
     
-    let manifest_list = parse::ManifestList::from_file(&manifest_list_path)
+    let manifest_list = parse::ManifestList::from_file(&manifest_list_path, Some(""))
         .await.expect("Failed to parse manifest list");
     println!("Manifest List Records: {:?}\n\n", manifest_list.records);
     
@@ -22,7 +22,7 @@ async fn test_full_parse() {
         .expect("No records found in manifest list");
     println!("First Manifest List Record: {:?}\n\n", first_record);
     
-    let manifest = parse::ManifestFile::from_file(&first_record.manifest_path)
+let manifest = parse::ManifestFile::from_file(&first_record.manifest_path,Some(""))
         .await.unwrap();
     println!("Manifest File: {:?}\n\n", manifest);
 
