@@ -3,8 +3,8 @@ use anyhow::Result as AnyResult;
 use iceberg_inspect::parse::{self, manifest_list};
 use comfy_table::*;
 
-pub fn list_files(table: &str, snapshot_id: Option<&str>) -> AnyResult<()> {
-    let files = parse::get_datafiles(table, snapshot_id)?;
+pub async fn list_files(table: &str, snapshot_id: Option<&str>) -> AnyResult<()> {
+    let files = parse::get_datafiles(table, snapshot_id).await?;
 
     let mut table = Table::new();
     table.set_header(vec!["Path", "Format", "Record Count", "File Size"])
@@ -28,10 +28,10 @@ pub fn list_files(table: &str, snapshot_id: Option<&str>) -> AnyResult<()> {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_list_files() {
+    #[tokio::test]
+    async fn test_list_files() {
         // This test assumes you have a valid Iceberg table metadata file at the specified path.
         let result = list_files("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json", None);
-        assert!(result.is_ok());
+        assert!(result.await.is_ok());
     }
 }

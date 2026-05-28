@@ -5,8 +5,8 @@ use std::collections::HashMap;
 use comfy_table::*;
 
 // TODO - Add ability to filter snapshots by timestamp or sequence number
-pub fn list_snapshots(table: &str) -> AnyResult<()> {
-    let metadata = parse::metadata::TableMetadata::from_file(table)?;
+pub async fn list_snapshots(table: &str) -> AnyResult<()> {
+    let metadata = parse::metadata::TableMetadata::from_file(table).await?;
     
     let snapshots = metadata.snapshots.unwrap_or_default();
     let mut table = comfy_table::Table::new();
@@ -39,10 +39,10 @@ pub fn list_snapshots(table: &str) -> AnyResult<()> {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_list_snapshots() {
+    #[tokio::test]
+    async fn test_list_snapshots() {
         // TODO change to use S3 once that's added later
         let result = list_snapshots("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json");
-        assert!(result.is_ok());
+        assert!(result.await.is_ok());
     }
 }

@@ -36,3 +36,6 @@ chrono = { version = "0.4", features = ["serde"] }
 
 # Terminal table display
 comfy-table = "7"
+
+# Url
+url = "2.5.4"

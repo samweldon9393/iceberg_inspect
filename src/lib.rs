@@ -5,3 +5,4 @@
  * public API and re-exports the parsing logic from the parse module.
  */
 pub mod parse;
+pub mod s3;

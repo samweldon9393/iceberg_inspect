@@ -23,8 +23,8 @@ pub struct ManifestFile {
 
 impl ManifestFile {
     #[allow(dead_code)]
-    pub fn from_file(path: &str) -> AnyResult<Self> {
-        let cursor = read_bytes(path)?;
+    pub async fn from_file(path: &str) -> AnyResult<Self> {
+        let cursor = read_bytes(path).await?;
         let reader = Reader::new(cursor)?;
         let record = reader.into_iter().next().unwrap()?;
         from_value(&record)
@@ -36,9 +36,9 @@ impl ManifestFile {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_from_file() {
-        let manifest = ManifestFile::from_file("./taxis/metadata/d6877f7e-bceb-480d-a2a0-d63fbe20045f-m0.avro").unwrap();
+    #[tokio::test]
+    async fn test_from_file() {
+        let manifest = ManifestFile::from_file("./taxis/metadata/d6877f7e-bceb-480d-a2a0-d63fbe20045f-m0.avro").await.unwrap();
         assert_eq!(manifest.snapshot_id, 7143047217624574150);
     }
 }

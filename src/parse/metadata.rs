@@ -91,8 +91,8 @@ pub struct Snapshot {
 
 impl TableMetadata {
     #[allow(dead_code)]
-    pub fn from_file(path: &str) -> AnyResult<Self> {
-        let cursor = parse::read_bytes(path)?;
+    pub async fn from_file(path: &str) -> AnyResult<Self> {
+        let cursor = parse::read_bytes(path).await?;
         let json_str = std::io::read_to_string(cursor)?;
         let metadata: TableMetadata = serde_json::from_str(&json_str)?;
         Ok(metadata)
@@ -140,10 +140,10 @@ impl Snapshot {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_from_file() {
+    #[tokio::test]
+    async fn test_from_file() {
         // TODO change to use S3 once that's added later
-        let metadata = TableMetadata::from_file("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json").unwrap();
+        let metadata = TableMetadata::from_file("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json").await.unwrap();
         assert_eq!(metadata.table_uuid, Some("3aaeb9f7-207f-4d66-91d5-b46c433d359b".into()));
     }
 }

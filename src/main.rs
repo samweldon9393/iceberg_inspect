@@ -34,14 +34,15 @@ struct Args {
     columns: Vec<String>,
 }
 
-fn main() -> AnyResult<()> {
+#[tokio::main]
+async fn main() -> AnyResult<()> {
     let args = Args::parse();
 
     match args.command.as_str() {
-        "snapshots" => commands::list_snapshots(&args.table),
-        "schema" => commands::show_schema(&args.table, args.snapshot.as_deref()),
-        "files" => commands::list_files(&args.table, args.snapshot.as_deref()),
-        "read" => commands::read(&args.table, args.snapshot.as_deref(), args.limit, &args.columns),
+        "snapshots" => commands::list_snapshots(&args.table).await,
+        "schema" => commands::show_schema(&args.table, args.snapshot.as_deref()).await,
+        "files" => commands::list_files(&args.table, args.snapshot.as_deref()).await,
+        "read" => commands::read(&args.table, args.snapshot.as_deref(), args.limit, &args.columns).await,
         _ => anyhow::bail!("Unknown command: {}", args.command),
     } 
 }

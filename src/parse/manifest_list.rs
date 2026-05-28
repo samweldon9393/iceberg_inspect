@@ -34,8 +34,8 @@ impl ManifestList {
     }
 
     #[allow(dead_code)]
-    pub fn from_file(path: &str) -> AnyResult<Self> {
-        let cursor = parse::read_bytes(path)?;
+    pub async fn from_file(path: &str) -> AnyResult<Self> {
+        let cursor = parse::read_bytes(path).await?;
         let reader = Reader::new(cursor)?;
         let mut manifest_list = ManifestList::default();
 
@@ -55,9 +55,9 @@ impl ManifestList {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_from_file() {
-        let manifest_list = ManifestList::from_file("./taxis/metadata/snap-7143047217624574150-0-d6877f7e-bceb-480d-a2a0-d63fbe20045f.avro").unwrap();
+    #[tokio::test]
+    async fn test_from_file() {
+        let manifest_list = ManifestList::from_file("./taxis/metadata/snap-7143047217624574150-0-d6877f7e-bceb-480d-a2a0-d63fbe20045f.avro").await.unwrap();
         assert_eq!(manifest_list.records[0].manifest_length, 6688);
     }
 }
