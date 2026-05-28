@@ -4,34 +4,7 @@ use iceberg_inspect::parse::{self, manifest_list};
 use comfy_table::*;
 
 pub fn list_files(table: &str, snapshot_id: Option<&str>) -> AnyResult<()> {
-    /* Start by parsing the table metadata to get the correct manifest list (snapshot) */
-    let metadata = parse::metadata::TableMetadata::from_file(table)?;
-    let snapshot = metadata.get_snapshot(snapshot_id);
-    let manifest_list_path = if let Some(snapshot_unwrapped) = snapshot {
-        snapshot_unwrapped.get_manifest_list_path()
-    } else {
-        anyhow::bail!("No matching snapshot found");
-    };
-    
-    /* Then parse the manifest list to get the list of manifest files */
-    let manifest_list = if let Some(path) = manifest_list_path {
-        manifest_list::ManifestList::from_file(&path)?
-    } else {
-        anyhow::bail!("No manifest list path found for snapshot");
-    };
-    let manifest_file_paths = manifest_list.records
-                                        .into_iter()
-                                        .map(|record| record.manifest_path)
-                                        .collect::<Vec<String>>();
-
-    
-    /* Finally, extract the list of data files from parsed manifest files */
-    let mut files: Vec<parse::data_file::DataFileRecord> = Vec::new();
-    for manifest_path in manifest_file_paths {
-        let manifest = parse::manifest::ManifestFile::from_file(&manifest_path)?;
-        files.push(manifest.data_file);
-    }
-    
+    let files = parse::get_datafiles(table, snapshot_id)?;
 
     let mut table = Table::new();
     table.set_header(vec!["Path", "Format", "Record Count", "File Size"])
