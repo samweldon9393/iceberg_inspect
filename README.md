@@ -40,7 +40,7 @@ iceberg-inspect --table <path-to-metadata.json> --command <command> [--snapshot 
 List all snapshots for a table in S3:
 
 ```bash
-iceberg-inspect --table s3://path/to/warehouse/my_table/metadata/v3.metadata.json -r us-east-1 --command snapshots
+iceberg-inspect -t s3://path/to/warehouse/my_table/metadata/v3.metadata.json -r us-east-1 -c snapshots
 ```
 
 Show the schema for the latest snapshot for a local table:
