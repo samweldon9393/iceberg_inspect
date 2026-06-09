@@ -2,8 +2,11 @@ use iceberg_inspect::parse;
 
 #[tokio::test]
 async fn test_full_parse() {
-    let metadata = parse::TableMetadata::from_file("./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json", Some(""))
-        .await.expect("Failed to parse table metadata");
+    /* TODO replace with a path on your own FS */
+    let metadata = parse::TableMetadata::from_file(
+        "./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json",
+        Some("")
+    ).await.expect("Failed to parse table metadata");
     println!("Table Metadata: {:?}\n\n", metadata);
     
     let cur_snapshot = metadata.get_current_snapshot()
@@ -22,7 +25,7 @@ async fn test_full_parse() {
         .expect("No records found in manifest list");
     println!("First Manifest List Record: {:?}\n\n", first_record);
     
-let manifest = parse::ManifestFile::from_file(&first_record.manifest_path,Some(""))
+    let manifest = parse::ManifestFile::from_file(&first_record.manifest_path,Some(""))
         .await.unwrap();
     println!("Manifest File: {:?}\n\n", manifest);
 

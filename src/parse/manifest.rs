@@ -1,6 +1,5 @@
 use super::data_file::DataFileRecord;
 use anyhow::Result as AnyResult;
-use std::io::Cursor;
 
 use apache_avro::{Reader, from_value};
 use serde::{Deserialize};

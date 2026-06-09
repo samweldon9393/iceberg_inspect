@@ -1,6 +1,6 @@
 use anyhow::Result as AnyResult;
 
-use iceberg_inspect::parse::{self, manifest_list};
+use iceberg_inspect::parse::{self};
 use comfy_table::*;
 
 pub async fn list_files(table: &str, region: Option<&str>, snapshot_id: Option<&str>) -> AnyResult<()> {

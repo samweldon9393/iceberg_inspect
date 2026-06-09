@@ -1,4 +1,3 @@
-use std::any::Any;
 
 use apache_avro::{Reader, from_value};
 use serde::{Deserialize};

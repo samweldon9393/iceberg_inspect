@@ -4,8 +4,6 @@
  * This is the main entry point for the Iceberg inspect tool.
  */
 
-mod parse;
-mod s3;
 mod commands;
 
 use clap::Parser;

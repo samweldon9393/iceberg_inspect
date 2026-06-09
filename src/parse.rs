@@ -14,12 +14,14 @@ pub mod manifest_list;
 pub mod manifest;
 pub mod metadata;
 
+#[allow(dead_code)]
 pub use metadata::TableMetadata;
 pub use manifest_list::ManifestList;
 pub use manifest::ManifestFile;
 pub use data_file::DataFileRecord;
 
 /* Do a full parse, from a table path and snapshot ID to a list of data files */
+#[allow(dead_code)]
 pub async fn get_datafiles(table_path: &str, region: Option<&str>, snapshot_id: Option<&str>) -> AnyResult<Vec<DataFileRecord>> {
     /* Start by parsing the table metadata to get the correct manifest list (snapshot) */
     let metadata = metadata::TableMetadata::from_file(table_path, region).await?;

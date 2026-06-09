@@ -1,6 +1,5 @@
 use arrow::util::pretty::print_batches;
 use parquet::arrow::arrow_reader::ParquetRecordBatchReaderBuilder;
-use std::fs::File;
 use anyhow::Result as AnyResult;
 
 use crate::parse;
