@@ -77,7 +77,8 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_datafiles() {
-        let table_path = "./taxis/metadata/00003-3b45d19f-94fb-4ea3-8d77-d769539ba79c.metadata.json";
-        assert_eq!(get_datafiles(table_path, Some(""), None).await.unwrap().len(), 2);
+        let metadata = "s3://iceberg-sandbox/mydb/mytable/metadata/00001-b2f7cc94-92e2-4e51-a27d-0164a852d443.metadata.json";
+        let datafiles = get_datafiles(metadata, Some("us-east-2"), None).await.unwrap();
+        assert_eq!(datafiles.len(), 1);
     }
 }

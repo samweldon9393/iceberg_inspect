@@ -12,6 +12,7 @@ cargo build --release
 ## Usage
 
 ```
+# Must have environment variables set: AWS_ACCESS_KEY_ID & AWS_SECRET_ACCESS_KEY
 iceberg-inspect --table <path-to-metadata.json> --command <command> [--snapshot <snapshot-id> --limit <num-rows> --columns <column,names> --region <S3-region>]
 ```
 
