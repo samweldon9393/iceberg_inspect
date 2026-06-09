@@ -56,7 +56,7 @@ pub async fn read_bytes(path: &str, region: Option<&str>) -> AnyResult<Cursor<Ve
         let (access_key, secret_key) = s3::env::get_keys()?;
         let bucket = s3::obj::get_bucket_name_from_path(path)?;
         let store = AmazonS3Builder::from_env()
-            .with_region(region.unwrap()) /* TODO don't hard code */
+            .with_region(region.unwrap())
             .with_bucket_name(bucket)
             .with_access_key_id(access_key)
             .with_secret_access_key(secret_key)
